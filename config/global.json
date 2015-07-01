@@ -1,0 +1,17 @@
+{
+  "global": {
+    "parseVersion": "1.4.2"
+  },
+  "applications": {
+    "_default": {
+      "link": "infradesign-blueoctopus-project-cms"
+    },
+    "infradesign-blueoctopus-project-cms": {
+      "applicationId": "NyrUCp8l7LezGnpE7YSUN26quUylPmjJpxA0n1cm",
+      "masterKey": "sgEJmmL9Sfy00ozzjmrn0NYtyfZGXbB7JB1KobtL"
+    },
+    "infradesign-blueoctopus-project-cms-parse": {
+      "link": "infradesign-blueoctopus-project-cms"
+    }
+  }
+}
