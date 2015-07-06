@@ -17,7 +17,7 @@ Parse.Cloud.beforeSave(ProjectClassName, function(request, response) {
   } else {
     var query = new Parse.Query(Project);
     query.equalTo("title", request.object.get("title"));
-    query.notEqualTo("objectId", request.object.id);
+    query.notEqualTo("objectId", request.object.id || null);
     query.find({
       success: function(object) {
         if (object.length) {
@@ -35,11 +35,15 @@ Parse.Cloud.beforeSave(ProjectClassName, function(request, response) {
 
 Parse.Cloud.beforeSave(MemberClassName, function(request, response) {
   if (!request.object.get("username") || request.object.get('username').trim() == '') {
-    response.error('A member must have a title.');
+    response.error('A member must have a username.');
+  } else if(!request.object.get('password') || request.object.get('password').trim() == '') {
+    response.error('A member must have a password.');
+  } else if(!request.object.get("fullName") || request.object.get('fullName').trim() == '') {
+    response.error('A member must have a full name.');
   } else {
     var query = new Parse.Query(Member);
     query.equalTo("username", request.object.get("username"));
-    query.notEqualTo("objectId", request.object.id);
+    query.notEqualTo("objectId", request.object.id || null);
     query.find({
       success: function(object) {
         if (object.length) {
@@ -55,15 +59,16 @@ Parse.Cloud.beforeSave(MemberClassName, function(request, response) {
   }
 });
 
-Parse.Cloud.beforeSave(UserRoleClassName, function(request, name) {
-  if (!request.object.get("name") || request.object.get('title').trim() == '') {
-    response.error('A role must have a title.');
+Parse.Cloud.beforeSave(UserRoleClassName, function(request, response) {
+  if (!request.object.get("name") || request.object.get('name').trim() == '') {
+    response.error('A role must have a name.');
   } else {
     var query = new Parse.Query(UserRole);
     query.equalTo("name", request.object.get("name"));
-    query.notEqualTo("objectId", request.object.id);
+    query.notEqualTo("objectId", request.object.id || null);
     query.find({
       success: function(object) {
+         for(k in object) { console.log(object[k].get('name')); }
         if (object.length) {
           response.error("A role with same name is already existed.");
         } else {
@@ -83,7 +88,7 @@ Parse.Cloud.beforeSave(TeamClassName, function(request, response) {
   } else {
     var query = new Parse.Query(Team);
     query.equalTo("name", request.object.get("name"));
-    query.notEqualTo("objectId", request.object.id);
+    query.notEqualTo("objectId", request.object.id || null);
     query.find({
       success: function(object) {
         if (object.length) {
