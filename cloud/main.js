@@ -103,3 +103,23 @@ Parse.Cloud.beforeSave(TeamClassName, function(request, response) {
     });
   }
 });
+
+Parse.Cloud.afterDelete(TeamClassName, function(request) {
+
+  // after delete a student find the associated sessions and remove
+  var query = new Parse.Query(MemberClassName);
+    var team = {
+      __type: 'Pointer',
+      className: TeamClassName,
+      objectId: request.object.id
+    }
+  query.equalTo("team", team);
+
+  query.find().then(function(results) {
+    return Parse.Object.destroyAll(results);
+  }).then(function(success) {
+    
+  }, function(error) {
+    console.error(error.message);
+  });
+});
